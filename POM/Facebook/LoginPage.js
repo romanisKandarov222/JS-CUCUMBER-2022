@@ -27,6 +27,38 @@ class LoginPage {
         await this.commands.clickWebElement(this.createNewAccountLocator);
     }
 
+    async isLoginFieldEnabled(fieldName) {
+        let isFieldEnabled = false;
+        switch (fieldName.toLowerCase()) {
+            case 'email':
+                isFieldEnabled = await this.commands.isWebElementEnabled(this.loginEmailLocator);
+                break;
+            case 'password':
+                isFieldEnabled = await this.commands.isWebElementEnabled(this.loginPassLocator);
+                break;
+            case 'button':
+                isFieldEnabled = await this.commands.isWebElementEnabled(this.loginButtonLocator);
+                break;        
+            default:
+                break;
+        }
+        return isFieldEnabled;
+    }
+
+
+    async isLoginEmailEnabled() {
+        return await this.commands.isWebElementEnabled(this.loginEmailLocator);
+    }
+
+
+    async isLoginPasswordEnabled() {
+        return await this.commands.isWebElementEnabled(this.loginPassLocator);
+    }
+    
+
+    async isLoginButtonEnabled() {
+        return await this.commands.isWebElementEnabled(this.loginButtonLocator);
+    }
 
 
 
