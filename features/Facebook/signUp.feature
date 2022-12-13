@@ -7,7 +7,7 @@ Feature: Sign Up
 
     @imp @signUp-1
     Scenario: Verify current date is displayed on Sign-Up form
-        Then I verify current date is displayed in birthdate dropdown
+        Then I verify current date is displayed in birth-date dropdown
 
     @signup @gender @sanity @smoke
     Scenario: Verify no gender button is selected

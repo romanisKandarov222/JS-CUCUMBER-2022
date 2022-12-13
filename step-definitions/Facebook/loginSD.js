@@ -76,6 +76,10 @@ When(/^I type '(.+)' as (username|password)$/, async function (data, field) {
     }
 });
 
+When(/^I click login button$/, async function () {
+    await loginPage.clickLoginInButton();
+    await browser.pause(5000);
+});      
 
 When(/^I verify error is displayed$/, async function () {
     expect(await loginErrorPage.isLoginErrorDisplayed(), 'Login error is not displayed').to.be.true;
