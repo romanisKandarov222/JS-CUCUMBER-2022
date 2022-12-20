@@ -7,8 +7,6 @@ const {expect} = require("chai");
 
 const loginPage = new LoginPage();
 const loginErrorPage = new LoginErrorPage();
-
-
 // Glue Code
 /**
 * GC is a regular expression which helps to map Scenario-steps with functions (step-definitions)
@@ -63,6 +61,10 @@ When(/^I type '(.*)' as (.*)$/, async function(data, field) {
     }
 }); */
 
+/*
+    I type 'X' as username
+    I type 'X' as password
+*/
 When(/^I type '(.+)' as (username|password)$/, async function (data, field) {
     switch (field.toLowerCase()) {
         case 'username':
@@ -85,7 +87,10 @@ When(/^I verify error is displayed$/, async function () {
     expect(await loginErrorPage.isLoginErrorDisplayed(), 'Login error is not displayed').to.be.true;
 });
 
-When(/^I verify login (.*) is enabled$/, async function (field) {
+/*
+    I verify login "A" is enabled
+*/
+When(/^I verify login (email|password|button) is enabled$/, async function (field) {
     let isFieldEnabled = false;
     switch (field.toLowerCase()) {
         case 'email':
@@ -103,3 +108,14 @@ When(/^I verify login (.*) is enabled$/, async function (field) {
     expect(isFieldEnabled, `Login ${field} is NOT enabled`).to.be.true;
     
 });
+
+When(/^I click on (.+) link$/, async function (linkName) {
+    this.totalWindowsBeforeClick = await loginPage.getCurrentWindowsCount();
+    await loginPage.clickLinkName(linkName);
+});
+
+/* Then(/^I verify (.+) opens in a new window with title "(.+)"$/, async function () {
+    loginPage.waitForNewLinkWindow(this.totalWindowsBeforeClick);
+    this.totalWindowsAfterClick = await loginPage.getCurrentWindowsCount();
+    expect(this.totalWindowsBeforeClick + 1, 'Number of windows are not as expected').to.equal(this.totalWindowsAfterClick);
+}); */
