@@ -39,14 +39,14 @@ Feature: Login
         Then I verify error is displayed
 
     Scenario Outline: Verify user gets a new page when click <pageName>
-        When I click on <pageName>
-        Then I verify <pageName> opens in a new window
+        When I click on <pageName> link
+        #Then I verify <pageName> opens in a new window with title "<pageTitle>"
         Examples:
-            | pageName  |
-            | Instagram |
-            | Oculus    |
-            | Meta Pay  |
-            | Portal    |
+            | pageName  | pageTitle                                               |
+            | Instagram | Instagram                                               |
+            | Oculus    | Meta Quest VR headsets, accessories and equipment       |
+            | Meta Pay  | Meta Pay: Simple, Secure, Free Payments                 |
+            | Portal    | Meta Portal - Video calling devices with Alexa built-in |
 
     @login-3
     Scenario: Verify error for empty login flow
@@ -75,14 +75,14 @@ Feature: Login
 #     Then user is able to add payment method
 
 
-#     Scenario Outine: Verify user can add payment method - <accType>
-#         Given user is on Payment page
-#         When user clicks add Payment method button
-#         And user selects <accType> account
-#         And user enters account number as <accNumber>
-#         And user enters routing number as <accRouting>
-#         Then user is able to add payment method
-#     Examples:
+# Scenario Outine: Verify user can add payment method - <accType>
+#      Given user is on Payment page
+#      When user clicks add Payment method button
+#      And user selects <accType> account
+#      And user enters account number as <accNumber>
+#      And user enters routing number as <accRouting>
+#      Then user is able to add payment method
+# Examples:
 #         | accType  | accNumber | accRouting |
 #         | Saving   | 123456789 | 021000021  |
 #         | Checking | 987654321 | 021000022  |

@@ -60,6 +60,18 @@ class LoginPage {
         return await this.commands.isWebElementEnabled(this.loginButtonLocator);
     }
 
+    async clickLinkName(linkName) {
+        await this.commands.clickWebElement(`=${linkName}`);
+    }
+
+    async isMultipleWindowsOpen(expWindowsCount) {
+        console.log(`\n\n this.commands.getHandles().length -> ${(await this.commands.getHandles()).length}`);
+        return (await this.commands.getHandles()).length === expWindowsCount;
+    }
+
+    async getCurrentWindowsCount() {
+        return (await this.commands.getHandles()).length;
+    }
 
 
 }

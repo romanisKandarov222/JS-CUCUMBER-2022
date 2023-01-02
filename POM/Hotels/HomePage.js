@@ -21,6 +21,53 @@ class HomePage {
     prevCalendarButtonLocator = '(//button[@data-stid="date-picker-paging"])[1]';
     leftSideCalendarHeaderLocator = '(//div[@class="uitk-date-picker-month"])[1]//h2';
 
+
+
+    // Code test locators
+    languageEnglishLocator = '//div[text()="English"]';
+    languageSpanishLocator = '//div[text()="Español"]';
+    dropDownLanguageChoice = '//select[@id="language-selector"]';
+    saveButton = '//button[text()="Save"]';
+    languageLoc = '//label[text()="Language"]'
+    travelersLocator = '//label[text()="Travelers"]';
+
+
+    async clickTravelers() {
+        await this.commands.clickWebElement(this.languageEnglishLocator);
+    }
+
+    async clickLanguageButton() {
+        await this.commands.clickWebElement(this.languageEnglishLocator);
+    }
+
+    async clickLanguageOption() {
+        await this.commands.clickWebElement(this.languageLoc);
+    }
+
+
+
+    async changeLanguage(language) {
+        switch (language) {
+            case 'English':
+                await this.commands.clickWebElement(this.languageEnglishLocator);
+                await this.commands.clickWebElement(this.saveButton);
+                break;
+            case 'Español':
+                await this.commands.clickWebElement(this.languageSpanishLocator);
+                await this.commands.clickWebElement(this.saveButton);
+                break;    
+            default:
+                break;
+        }
+    }
+
+    async selectLanguageFromDropDown() {
+        await this.commands.selectDataInDropdown(this.dropDownLanguageChoice);
+    }
+
+
+
+
     // functions to interact with the web-Elements on the HomePage
     async enterDestination(destination) {
         await this.commands.clickWebElement(this.goingToLocator);
@@ -83,6 +130,7 @@ class HomePage {
             count++;
         }
     }
+
 
 }
 module.exports = HomePage;
