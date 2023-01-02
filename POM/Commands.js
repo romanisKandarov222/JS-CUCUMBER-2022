@@ -92,14 +92,14 @@ class Commands {
      async isWebElementEnabled(locator) {
         /*
             1. find the webElement
-            2. if found, check if element is enabled
+            2. if found, check if element is displayed
             3. otherwise, wait for 1-second then start from step-1
 
             do above flow for 30-seconds
         */
-       await $(locator).waitForEnabled({
+       await $(locator).waitForDisplayed({
             timeout:120000,
-            timeoutMsg: 'Element is not enabled'
+            timeoutMsg: 'Element is not displayed'
         });
         return await $(locator).isEnabled();
     }

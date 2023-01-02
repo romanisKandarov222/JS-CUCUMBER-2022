@@ -5,7 +5,7 @@ Feature: Code Test
     Scenario Outline: Verify user is able to change language
         Given I am on hotels
         When I change language to <languageOption>
-        #Then I verify language got changed to <language>
+        Then I verify language got changed to <language>
 
         Examples:
             | languageOption           | language |

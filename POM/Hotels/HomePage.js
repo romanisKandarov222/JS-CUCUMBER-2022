@@ -24,48 +24,40 @@ class HomePage {
 
 
     // Code test locators
-    languageEnglishLocator = '//div[text()="English"]';
-    languageSpanishLocator = '//div[text()="Español"]';
-    dropDownLanguageChoice = '//select[@id="language-selector"]';
-    saveButton = '//button[text()="Save"]';
-    languageLoc = '//label[text()="Language"]'
+    languageLocator = '//button[@data-stid]//div[contains(@class, "uitk-text uitk-type-300 uitk-text-default-theme")]';
+    dropDownLanguageChoice = '#language-selector';
+    saveButton = '//button[text()="Save" or text()="Guardar"]';
+    
+
     travelersLocator = '//label[text()="Travelers"]';
 
 
-    async clickTravelers() {
-        await this.commands.clickWebElement(this.languageEnglishLocator);
+
+    // Practice locators
+    moreTravel = '//div[text()="More travel"]';
+    moreTravelDropDown = '//nav[@id="header-toolbar-nav"]/following::div[@class="uitk-list"]';
+
+
+
+    async changeLanguage(newLanguage) {
+        await this.commands.clickWebElement(this.languageLocator);    
+        await this.commands.selectDataInDropdown(this.dropDownLanguageChoice, newLanguage);    
+        await this.commands.clickWebElement(this.saveButton);       
     }
 
-    async clickLanguageButton() {
-        await this.commands.clickWebElement(this.languageEnglishLocator);
-    }
-
-    async clickLanguageOption() {
-        await this.commands.clickWebElement(this.languageLoc);
-    }
-
-
-
-    async changeLanguage(language) {
-        switch (language) {
-            case 'English':
-                await this.commands.clickWebElement(this.languageEnglishLocator);
-                await this.commands.clickWebElement(this.saveButton);
-                break;
-            case 'Español':
-                await this.commands.clickWebElement(this.languageSpanishLocator);
-                await this.commands.clickWebElement(this.saveButton);
-                break;    
-            default:
-                break;
-        }
-    }
-
-    async selectLanguageFromDropDown() {
-        await this.commands.selectDataInDropdown(this.dropDownLanguageChoice);
+    async getWebLanguage() {
+        return await this.commands.getTextOfWebElement(this.languageLocator);
     }
 
 
+    async clickMoreTravel() {
+        await this.commands.clickWebElement(this.moreTravel);
+    }
+
+
+    async chooseGiftCardInDropDown(giftCard) {
+        await this.commands.selectDataInDropdown(this.moreTravelDropDown, giftCard);
+    }
 
 
     // functions to interact with the web-Elements on the HomePage
