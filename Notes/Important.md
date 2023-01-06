@@ -4,13 +4,17 @@ WebDriverIO Docs:
 
 Execution: 
     to run all features files:
-        npx wdio wdio.conf.js
+        npx wdio config/wdio.conf.js
 
     to run a particular feature file:
-        npx wdio wdio.conf.js --spec ./relative-path-of-feature-file
+        npx wdio config/wdio.conf.js --spec ./relative-path-of-feature-file
 
         eg:
-        npx wdio wdio.conf.js --spec ./feature/Facebook/login.feature
+        npx wdio config/wdio.conf.js --spec ./feature/Facebook/login.feature
+
+
+    Using regular expression:
+        npx wdio config/wdio.conf.js --cucumberOpts.tagExpression '@tagExpression'
 
 
 
