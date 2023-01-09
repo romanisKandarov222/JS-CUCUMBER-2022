@@ -104,6 +104,22 @@ class Commands {
         return await $(locator).isEnabled();
     }
 
+
+    async isWebElementDisplayed(locator) {
+        /*
+            1. find the webElement
+            2. if found, check if element is enabled
+            3. otherwise, wait for 1-second then start from step-1
+
+            do above flow for 30-seconds
+        */
+       await (await $(locator)).waitForDisplayed({
+            timeout:120000,
+            timeoutMsg: 'Element is not displayed'
+        });
+        return await (await $(locator)).isDisplayed();
+    }
+
     /**
      * Generic function to get Text of a WebElement
      * name: getTextOfWebElement
