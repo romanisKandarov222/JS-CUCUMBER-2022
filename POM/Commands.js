@@ -98,7 +98,7 @@ class Commands {
             do above flow for 30-seconds
         */
        await $(locator).waitForEnabled({
-            timeout:120000,
+            timeout:12000,
             timeoutMsg: 'Element is not enabled'
         });
         return await $(locator).isEnabled();
@@ -134,7 +134,7 @@ class Commands {
             do above flow for 30-seconds
         */
         await $(locator).waitForDisplayed({
-            timeout:120000,
+            timeout:10000,
             timeoutMsg: 'Element is not displayed'
         });
         return await $(locator).getText();

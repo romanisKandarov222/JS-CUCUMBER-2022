@@ -39,7 +39,8 @@ class HomePage {
     errorPhoneNum = '//div[text()="Please enter a valid phone number."]';
     
     travelersAdultsIncreaseButton = '//*[@aria-label="Increase the number of adults in room 1"]/..';
-    travelersChildrenIncreaseButton = '//*[@aria-label="Increase the number of children in room 1"]/..';
+    travelersChildrenIncreaseButton = '//*[@aria-label="Increase the number of children in room 1"]/../..';
+    travelersChildrenDecreaseButton = '//*[@aria-label="Decrease the number of children in room 1"]/../..';
     firstChild = '//*[@id="age-traveler_selector_children_age_selector-0-0"]';
     secondChild = '//*[@id="age-traveler_selector_children_age_selector-0-1"]';
     thirdChild = '//*[@id="age-traveler_selector_children_age_selector-0-2"]';
@@ -48,6 +49,20 @@ class HomePage {
     childrenNumber = '//input[@id="traveler_selector_children_step_input-0"]';
 
     signIn = '//button[text()="Sign in"]';
+    signUp = '//a[@data-stid="link-header-account-signup"]';
+    signInButton = '//a[@data-stid="link-header-account-signin"]';
+    submitSignInButton = '//button[@id="loginFormSubmitButton"]';
+    invalidCredentialsError = '//h3[contains(text(), "Email and password don")]';
+    emailField = '//*[@id="loginFormEmailInput"]';
+    pwdField = '//*[@id="loginFormPasswordInput"]';
+    signUpEmailField = '#signupFormEmailInput';
+    signUpFirstNameField = '#signupFormFirstNameInput'; 
+    signUpLastNameField = '#signupFormLastNameInput'; 
+    signUpPwd = '#signupFormPasswordInput'; 
+    firstMsgPwdMeter = '//li[text()="Includes 8-64 characters"]';
+    secondMsgPwdMeter = '//li[text()="Combines letters and numbers"]';
+    thirdMsgPwdMeter = '//li[text()="Add more words that are less common."]';
+    fourthMsgPwdMeter = '//li[text()="Avoid common character sequences."]';
     feedbackLink = '//a[text()="Feedback"]'; 
     submitButton = '//*[@id="submit-button"]';
     submitFdbError = '//p[text()="Please fill in the required information highlighted below."]';
@@ -64,6 +79,236 @@ class HomePage {
     currentMonth = '//div[@class="uitk-date-picker-month"]//h2[text()="' + this.now.format('MMMM YYYY') + '"]';
     currentDisplayedMonth = '//div[@class="uitk-date-picker-month"][1]//h2';
     previousPage = '//*[@id="prevMonth-title"]';
+
+
+    destination = '//*[@id="destination_form_field-menu"]';
+    checkInField = '//div[@class="uitk-date-picker-menu uitk-menu uitk-menu-mounted"]';
+    checkInDates = '//td[@class="uitk-date-picker-day-number"]//button[@aria-label="Feb 10, 2023"]';
+    checkOutDates = '//td[@class="uitk-date-picker-day-number"]//button[@aria-label="Feb 16, 2023"]';
+    doneButton = '//button[@data-stid="apply-date-picker"]';
+    searchButton = '//*[@id="search_button"]';
+    sortByFiveStar = '//input[@id="ShoppingSelectableFilterOption-star-50"]/..';
+    fiveStarFilter = '//span[contains(text(), "out of 5")]';
+    sortByDropdown = '#sort-filter-dropdown-sort';
+    priceSorting = '//div[contains(text(), "The price is $")]';
+
+    invalidEmailErrorMsg = '#signupFormEmailInput-error';
+    invalidFirstNameErrorMsg = '#signupFormFirstNameInput-error';
+    invalidLastNameErrorMsg = '#signupFormLastNameInput-error';
+    signUpCheckBox = '//div[contains(@class, "uitk-checkbox")]';
+    signUpContinueButton = '#signupFormSubmitButton';
+
+    termsLocator = '//a[text()="Terms and Conditions"]';
+    termsPageTitle = '//h1[text()="TERMS OF SERVICE"]';
+    lastRevised = '//span[contains(text(), "Last revised:")]';
+    privacyStatement = '//a[text()="Privacy Statement"]';
+    privacyPageTitle = '//h1[text()="Privacy Statement"]';
+    lastUpdated = '//p[contains(text(), "Last Updated:")]';
+
+    weakPwdMsg = '//div[text()="Weak"]';
+    strongPwdMsg = '//div[text()="Strong"]';
+    veryStrongPwdMsg = '//div[text()="Very strong"]';
+    pwdStrengthBar = '(//span[contains(text(), "Password strength")])[2]';
+
+    //************* TC-20 *************//
+    async verifyPwdStrengthBarProgress() {
+        const strengthBarProgress = await this.commands.getTextOfWebElement(this.pwdStrengthBar); 
+        if(strengthBarProgress == 'Password strength 0%') {
+            return 'not';
+        } else if(strengthBarProgress == 'Password strength 50%') {
+            return 'half';
+        } else if(strengthBarProgress == 'Password strength 75%') {
+            return 'almost';
+        } else if(strengthBarProgress == 'Password strength 100%') {
+            return 'completely';
+        } else {
+            return '{Invalid Input}';
+        }
+    }
+
+    async verifyPwdStrengthMsg() {
+        const status = await this.commands.getTextOfWebElement('//div[contains(@class, "uitk-progress-bar-description uitk-type-bold")]');
+        switch(status) {
+            case 'Weak': return 'Weak';
+            case 'Strong': return 'Strong';
+            case 'Very Strong': return 'Very Strong';
+        }
+    }
+
+
+
+    //************* TC-20 *************//
+    async clickTermsLink() {
+        await this.commands.clickWebElement(this.termsLocator);
+    }
+
+    async verifyTermsOpenedInNewPage() {
+        return await this.commands.isWebElementDisplayed(this.termsPageTitle);
+    }
+
+    async isLastRevisedDateFormatAsExpected() {
+        // const regExpression = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
+        // return dateFromLastRevised.match(regExpression) ? true : false 
+        const dateFromLastRevised = (await this.commands.getTextOfWebElement(this.lastRevised)).slice(14);
+        return moment(dateFromLastRevised, 'MM/DD/YY', true).isValid();
+    }
+
+    async clickPrivacyLink() {
+        await this.commands.clickWebElement(this.privacyStatement);
+    }
+
+    async verifyPrivacyOpenedInNewTab() {
+        return await this.commands.isWebElementDisplayed(this.privacyStatement);
+    }
+
+    async isLastUpdatedFormatAsExpected() {
+        //const regExpression = "^(December|January|February|March)\ (([0-9])|([0-2][0-9])|([3][0-1])),\ \d{4}$";
+        //return dateFromLastUpdated.match(regExpression) ? true : false 
+        const dateFromLastUpdated = (await this.commands.getTextOfWebElement(this.lastUpdated)).slice(14);
+        return moment(dateFromLastUpdated, 'DD MMMM, YYYY', true).isValid();
+    }
+
+    async switchToCreateAnAccount(){
+        const allHandles = await browser.getWindowHandles();
+        for (const handle of allHandles) {
+            await browser.switchToWindow(handle);
+            const title = await browser.getTitle();
+            if (title.startsWith('Create an account')) {
+                await browser.switchToWindow(handle);
+                break;
+            }
+        }
+    }
+
+    async switchToPrivacyStatement(){
+        const allHandles = await browser.getWindowHandles();
+        for (const handle of allHandles) {
+            await browser.switchToWindow(handle);
+            const title = await browser.getTitle();
+            if (title.startsWith('Hotels.com - Deals')) {
+                await browser.switchToWindow(handle);
+                break;
+            }
+        }
+    }
+
+
+    //************* TC-22 *************//
+    async invalidEmailVerificationError() {
+        return await this.commands.getTextOfWebElement(this.invalidEmailErrorMsg);
+    }
+
+    async invalidFirstNameVerificationError() {
+        return await this.commands.getTextOfWebElement(this.invalidFirstNameErrorMsg);
+    }
+
+    async invalidLastNameVerificationError() {
+        return await this.commands.getTextOfWebElement(this.invalidLastNameErrorMsg);
+    }
+
+    async inputEmail(userInput) {
+        await this.commands.clickWebElement(this.signUpEmailField);
+        await this.commands.typeInWebElement(this.signUpEmailField, userInput);
+    }
+
+    async inputFirstName(userInput) {
+        await this.commands.clickWebElement(this.signUpFirstNameField);
+        await this.commands.typeInWebElement(this.signUpFirstNameField, userInput);
+    }
+
+    async inputLastName(userInput) {
+        await this.commands.clickWebElement(this.signUpLastNameField);
+        await this.commands.typeInWebElement(this.signUpLastNameField, userInput);
+    }
+
+    async isSignUpCheckBoxDisplayed() {
+        const checkBox = await this.commands.isWebElementDisplayed(this.signUpCheckBox);
+        const check_Box = await this.commands.isWebElementEnabled(this.signUpCheckBox);
+        return checkBox && check_Box ? true : false;
+    }
+
+    async isContinueButtonDisplayedAndDisabled() {
+        const continueButton = await this.commands.isWebElementDisplayed(this.signUpContinueButton);
+        const continue_Button = await (await $(this.signUpContinueButton)).isEnabled();
+        return continueButton && !continue_Button ? true : false;
+    }
+
+    //************* TC-23 *************//
+       async enterDestinationNew(direction) {
+        await this.commands.clickWebElement(this.destination);
+        await this.commands.typeInWebElement(this.destination, direction);
+    }
+
+    async selectFromAutoSuggestion(userDirection) {
+        await this.commands.selectFromAutoSuggestion(this.destination, userDirection);
+    }
+
+    async chooseCheckInDate() {
+        await this.commands.clickWebElement(this.checkInField);
+        await this.commands.clickWebElement(this.checkInDates);
+    }
+
+    async chooseCheckOutDate() {
+        await this.commands.clickWebElement(this.checkOutDates);
+        await this.commands.clickWebElement(this.doneButton);
+    }
+
+    async clickSearchButton() {
+        await this.commands.clickWebElement(this.searchButton);
+    }
+
+    async selectFiveStarRating() {
+        const fiveStar = await $(this.sortByFiveStar);
+        await fiveStar.scrollIntoView();
+        await browser.pause(2000);
+        await this.commands.clickWebElement(this.sortByFiveStar);
+    }
+
+    async verifyFiveStarRating() {
+        const rating = await this.commands.findAllWebElement(this.fiveStarFilter);
+        
+        const ratingFromHighToLow = true;
+        const allRatings = [];
+
+        for(const starRating of rating) {
+            allRatings.push((await starRating.getText()).slice(0,3));
+        } console.log(`${allRatings}`);
+
+
+        for(var i = 0; i < allRatings.length; i++) {
+            if(i = allRatings[i+1]) {
+                return ratingFromHighToLow;
+            } else {
+                return !ratingFromHighToLow;
+            }
+        }
+    }
+
+    async selectPriceSorting(userChoice) {
+        await this.commands.selectDataInDropdown(this.sortByDropdown, userChoice);
+    }
+
+    async verifyPriceSorting() {
+        const priceList = await this.commands.findAllWebElement(this.priceSorting);
+        
+        const priceLowToHigh = true;
+        const allPriceTags = [];
+
+        for(const price of priceList) {
+            allPriceTags.push((await price.getText()).slice(14,17));
+        } console.log(`${allPriceTags}`);
+
+
+        for(var i = 0; i < allPriceTags.length; i++) {
+            if(i <= allPriceTags[i+1]) {
+                return priceLowToHigh;
+            } else {
+                return !priceLowToHigh;
+            }
+        }
+    }
+
+
 
     //************* TC-30 *************//
     async scrollToGetTheAppButton() {
@@ -163,6 +408,69 @@ class HomePage {
     async isErrorRedDotsDisplayed() {
         return await this.commands.isWebElementDisplayed(this.errorRedDots);
     }
+
+    //************* TC-28 *************//
+    async increaseChildCount(child) {
+        if(child == 2) {
+            for(var i = 0; i < 2; i++) {
+                await this.commands.clickWebElement(this.travelersChildrenIncreaseButton);
+            }
+        }
+        else if(child == 6) {
+            for(var i = 0; i < 6; i++) {
+                await this.commands.clickWebElement(this.travelersChildrenIncreaseButton);
+            }
+        }
+        else if(child == 5) {
+            for(var i = 0; i < 5; i++) {
+                await this.commands.clickWebElement(this.travelersChildrenIncreaseButton);
+            }
+        }
+        else if(child == 0) {
+            await browser.pause(1000);
+        }
+    }
+
+    async verifyChildDropdown() {
+        const childDropdown = parseInt(await this.commands.getAttributeWebElement(this.childrenNumber, "value"));
+        switch(childDropdown) {
+            case 2: return true;
+            case 6: return true;
+            case 5: return true;
+            case 0: return true;
+        }
+    }
+
+    async verifyPlusButtonState() {
+        const childDropdown = parseInt(await this.commands.getAttributeWebElement(this.childrenNumber, "value"));
+        switch(childDropdown) {
+            case 2: return await this.commands.isWebElementEnabled(this.travelersChildrenIncreaseButton);
+            case 6: const disAttrPresent = await this.commands.getAttributeWebElement(this.travelersChildrenIncreaseButton, 'disabled');
+                    if(disAttrPresent) {return true} 
+            case 5: return await this.commands.isWebElementEnabled(this.travelersChildrenIncreaseButton);
+            case 0: return await this.commands.isWebElementEnabled(this.travelersChildrenIncreaseButton);
+        }
+        
+    }
+
+    async verifyMinusButtonState() {
+        const childDropdown = parseInt(await this.commands.getAttributeWebElement(this.childrenNumber, "value"));
+        switch(childDropdown) {
+            case 2: return await this.commands.isWebElementEnabled(this.travelersChildrenDecreaseButton);
+            case 6: return await this.commands.isWebElementEnabled(this.travelersChildrenDecreaseButton);
+            case 5: return await this.commands.isWebElementEnabled(this.travelersChildrenDecreaseButton);
+            case 0: const disAttrPresent = await this.commands.getAttributeWebElement(this.travelersChildrenIncreaseButton, 'disabled');
+                    if(!disAttrPresent) {return true} 
+        }
+        
+    }
+        
+    
+    
+
+
+
+
 
 
     //************* TC-31 *************//
@@ -272,8 +580,73 @@ class HomePage {
         }
     }
 
+    //************* TC-21 *************//
+    async clickSignInButton() {
+        await this.commands.clickWebElement(this.signInButton);
+    } 
+
+    async enterInvalidEmail() {
+        await this.commands.clickWebElement(this.emailField);
+        await this.commands.typeInWebElement(this.emailField, "123@gmail.com");
+    }
+
+    async enterInvalidPwd() {
+        await this.commands.clickWebElement(this.pwdField);
+        await this.commands.typeInWebElement(this.pwdField, "qwerty123");
+    }
+
+    async clickSubmitSignIn() {
+        await this.commands.clickWebElement(this.submitSignInButton);
+    } 
+
+    async invalidCredentials() {
+        return await this.commands.isWebElementDisplayed(this.invalidCredentialsError);
+    }
 
 
+    //************* TC-33 *************//
+    async clickSignUp() {
+        await this.commands.clickWebElement(this.signUp);
+    }
+
+
+    async enterEmail() {
+        await this.commands.clickWebElement(this.signUpEmailField);
+        await this.commands.typeInWebElement(this.signUpEmailField, "user@test.com");
+    }
+
+    async signUpFormEnterFirstName() {
+        await this.commands.clickWebElement(this.signUpFirstNameField);
+        await this.commands.typeInWebElement(this.signUpFirstNameField, "fUser");
+    }
+
+    async signUpFormEnterLastName() {
+        await this.commands.clickWebElement(this.signUpLastNameField);
+        await this.commands.typeInWebElement(this.signUpLastNameField, "lUser");
+    }
+
+    async signUpFormPwd(password) {
+        await this.commands.clickWebElement(this.signUpPwd);
+        await this.commands.typeInWebElement(this.signUpPwd, password);
+    }
+
+    async weakPwdMeterMsg() {
+        const strengthBarProgress = await this.commands.getTextOfWebElement(this.pwdStrengthBar); 
+        if(strengthBarProgress == 'Password strength 0%') {
+            return await this.commands.getTextOfWebElement(this.firstMsgPwdMeter);    
+        }else if(strengthBarProgress == 'Password strength 50%') {
+            return await this.commands.getTextOfWebElement(this.thirdMsgPwdMeter);    
+        }
+    }
+
+    async weakPwdMeterMsgSecond() {
+        const strengthBarProgress = await this.commands.getTextOfWebElement(this.pwdStrengthBar); 
+        if(strengthBarProgress == 'Password strength 0%') {
+            return await this.commands.getTextOfWebElement(this.secondMsgPwdMeter);    
+        }else if(strengthBarProgress == 'Password strength 50%') {
+            return await this.commands.getTextOfWebElement(this.fourthMsgPwdMeter);    
+        }
+    }
 
 
 
